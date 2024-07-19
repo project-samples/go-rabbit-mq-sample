@@ -1,0 +1,38 @@
+server:
+  name: go-subscription
+  port: 8080
+
+log:
+  level: info
+  map:
+    time: "@timestamp"
+    msg: message
+
+mongo:
+  uri: mongodb+srv://dbUser:Demoaccount1@projectdemo.g0lah.mongodb.net
+  database: masterdata
+
+retry:
+  retry_count_name: retry
+  limit_retry: 3
+  goroutines: false
+  key: key
+
+consumer:
+  rabbitmq:
+    url:  amqp://guest:guest@localhost:5672/
+    exchange_name: test
+    exchange_kind: fanout
+    auto_delete: false
+  retry:
+    retry_count_name: retry
+    limit_retry: 3
+    goroutines: false
+
+publisher:
+  url: amqp://guest:guest@localhost:5672/
+  exchange_name: test
+  exchange_kind: fanout
+  auto_delete: false
+  content_type: text/plain
+
