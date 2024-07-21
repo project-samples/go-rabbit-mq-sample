@@ -17,7 +17,7 @@ import (
 
 type ApplicationContext struct {
 	HealthHandler *health.Handler
-	Receive       func(ctx context.Context, handle func(context.Context, []byte, map[string]string))
+	Consume       func(ctx context.Context, handle func(context.Context, []byte, map[string]string))
 	Handle        func(context.Context, []byte, map[string]string)
 }
 
@@ -36,7 +36,7 @@ func NewApp(ctx context.Context, cfg Config) (*ApplicationContext, error) {
 		logInfo = log.InfoMsg
 	}
 
-	consumer, er2 := rabbitmq.NewConsumerByConfig(cfg.Consumer.RabbitMQ, true, true, logError)
+	consumer, er2 := rabbitmq.NewConsumerByConfig(cfg.Consumer, true, true, logError)
 	if er2 != nil {
 		log.Error(ctx, "Cannot create a new consumer. Error: "+er2.Error())
 		return nil, er2
@@ -51,15 +51,15 @@ func NewApp(ctx context.Context, cfg Config) (*ApplicationContext, error) {
 		return nil, er4
 	}
 	writer := w.NewWriter[*User](db, "user")
-	han := mq.NewRetryHandlerByConfig[User](cfg.Retry, writer.Write, validator.Validate, errorHandler.RejectWithMap, nil, publisher.Publish, logError, logInfo)
+	handler := mq.NewRetryHandlerByConfig[User](cfg.Retry, writer.Write, validator.Validate, errorHandler.RejectWithMap, nil, publisher.Publish, logError, logInfo)
 	mongoChecker := hm.NewHealthChecker(client)
-	consumerChecker := rabbitmq.NewHealthChecker(cfg.Consumer.RabbitMQ.Url, "rabbitmq_consumer")
+	consumerChecker := rabbitmq.NewHealthChecker(cfg.Consumer.Url, "rabbitmq_consumer")
 	publisherChecker := rabbitmq.NewHealthChecker(cfg.Publisher.Url, "rabbitmq_publisher")
 	healthHandler := health.NewHandler(mongoChecker, consumerChecker, publisherChecker)
 
 	return &ApplicationContext{
 		HealthHandler: healthHandler,
-		Receive:       consumer.Consume,
-		Handle:        han.Handle,
+		Consume:       consumer.Consume,
+		Handle:        handler.Handle,
 	}, nil
 }
