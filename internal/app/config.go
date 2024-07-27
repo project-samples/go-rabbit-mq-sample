@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	Server    server.ServerConf         `mapstructure:"server"`
+	Server    server.ServerConfig       `mapstructure:"server"`
 	Log       log.Config                `mapstructure:"log"`
 	Mongo     MongoConfig               `mapstructure:"mongo"`
 	Retry     mq.RetryHandlerConfig     `mapstructure:"retry"`
