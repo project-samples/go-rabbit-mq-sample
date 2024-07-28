@@ -8,6 +8,7 @@ import (
 
 	"github.com/core-go/health"
 	hm "github.com/core-go/health/mongo"
+	hr "github.com/core-go/health/rabbitmq"
 	w "github.com/core-go/mongo/writer"
 	"github.com/core-go/mq"
 	v "github.com/core-go/mq/validator"
@@ -53,8 +54,8 @@ func NewApp(ctx context.Context, cfg Config) (*ApplicationContext, error) {
 	writer := w.NewWriter[*User](db, "user")
 	handler := mq.NewRetryHandlerByConfig[User](cfg.Retry, writer.Write, validator.Validate, errorHandler.RejectWithMap, nil, publisher.Publish, logError, logInfo)
 	mongoChecker := hm.NewHealthChecker(client)
-	consumerChecker := rabbitmq.NewHealthChecker(cfg.Consumer.Url, "rabbitmq_consumer")
-	publisherChecker := rabbitmq.NewHealthChecker(cfg.Publisher.Url, "rabbitmq_publisher")
+	consumerChecker := hr.NewHealthChecker(cfg.Consumer.Url, "rabbitmq_consumer")
+	publisherChecker := hr.NewHealthChecker(cfg.Publisher.Url, "rabbitmq_publisher")
 	healthHandler := health.NewHandler(mongoChecker, consumerChecker, publisherChecker)
 
 	return &ApplicationContext{
