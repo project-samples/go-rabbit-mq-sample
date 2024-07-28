@@ -10,4 +10,4 @@ The sample about rabbit-mq, which use these libraries:
 
 ### Similar libraries for nodejs
 We also provide these libraries to support nodejs:
-- [rabbitmq-ext](https://www.npmjs.com/package/rabbitmq-ext), to wrap and simplify [amqplib](https://www.npmjs.com/package/amqplib). The sample is at [rabbitmq-sample](https://github.com/typescript-tutorial/rabbitmq-sample)
+- [rabbitmq-ext](https://www.npmjs.com/package/rabbitmq-ext), to wrap and simplify [amqplib](https://www.npmjs.com/package/amqplib), combine with [mq-one](https://www.npmjs.com/package/mq-one) for nodejs. The sample is at [rabbitmq-sample](https://github.com/typescript-tutorial/rabbitmq-sample).
