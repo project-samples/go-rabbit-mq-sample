@@ -7,3 +7,7 @@ The sample about rabbit-mq, which use these libraries:
 - [core-go/mq](https://github.com/core-go/mq) to implement this flow, which can be considered a low code tool for message queue consumer
 
   ![A common flow to consume a message from a message queue](https://cdn-images-1.medium.com/max/800/1*Y4QUN6QnfmJgaKigcNHbQA.png)
+
+### Similar libraries for nodejs
+We also provide these libraries to support nodejs:
+- [rabbitmq-ext](https://www.npmjs.com/package/rabbitmq-ext), to wrap and simplify [amqplib](https://www.npmjs.com/package/amqplib). The sample is at [rabbitmq-sample](https://github.com/typescript-tutorial/rabbitmq-sample)
